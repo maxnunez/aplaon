@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -9,8 +13,13 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'FrontController@index')->name('home');
+Auth::routes();
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/home', 'HomeController@index')->name('home');
+});
+Route::group(['prefix' => 'admin', 'middleware' => ['auth' => 'admin']], function () {
+       Route::get('/', 'AdminController@index')->name('admin');
 });
